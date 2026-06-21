@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Julian Ortiz — Bubble Developer & UX Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #b8f53a;
+    --green-dim: #8fc42a;
+    --bg: #0d0d0d;
+    --surface: #141414;
+    --surface2: #1c1c1c;
+    --border: rgba(255,255,255,0.08);
+    --text: #f0ede8;
+    --muted: #6b6b6b;
+    --muted2: #999;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+
+  ::selection { background: var(--green); color: #0d0d0d; }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 48px;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  nav.scrolled {
+    background: rgba(13,13,13,0.92);
+    backdrop-filter: blur(12px);
+    border-color: var(--border);
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--green);
+  }
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--muted2);
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    font-size: 13px;
+    font-weight: 500;
+    padding: 9px 20px;
+    border: 1px solid var(--green);
+    color: var(--green);
+    border-radius: 2px;
+    letter-spacing: 0.04em;
+    transition: background 0.2s, color 0.2s;
+  }
+  .nav-cta:hover { background: var(--green); color: #0d0d0d; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 96px 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(184,245,58,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(184,245,58,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 100%, black 20%, transparent 80%);
+  }
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 32px;
+  }
+  .hero-tag::before {
+    content: '';
+    display: block;
+    width: 24px; height: 1px;
+    background: var(--green);
+  }
+  h1.hero-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(52px, 8vw, 110px);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    max-width: 900px;
+    margin-bottom: 40px;
+  }
+  h1.hero-title em {
+    font-style: normal;
+    color: var(--green);
+  }
+  .hero-bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+  }
+  .hero-desc {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--muted2);
+    max-width: 440px;
+    font-weight: 300;
+  }
+  .hero-desc strong { color: var(--text); font-weight: 500; }
+  .hero-stats {
+    display: flex;
+    gap: 48px;
+    flex-shrink: 0;
+  }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 38px;
+    font-weight: 800;
+    color: var(--green);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .hero-scroll {
+    position: absolute;
+    right: 48px;
+    bottom: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    writing-mode: vertical-rl;
+  }
+  .scroll-line {
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, var(--muted), transparent);
+    animation: scrollline 1.6s ease-in-out infinite;
+  }
+  @keyframes scrollline {
+    0%,100% { transform: scaleY(1); opacity: 1; }
+    50% { transform: scaleY(0.4); opacity: 0.4; }
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 100px 48px; }
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 56px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::after {
+    content: '';
+    display: block;
+    height: 1px;
+    width: 40px;
+    background: var(--green);
+  }
+  h2.section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+  }
+
+  /* ── ABOUT ── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+    margin-top: 64px;
+  }
+  .about-text p {
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--muted2);
+    line-height: 1.8;
+    margin-bottom: 20px;
+  }
+  .about-text p strong { color: var(--text); font-weight: 500; }
+  .about-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 32px;
+  }
+  .tag {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    color: var(--muted2);
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .tag:hover { border-color: var(--green); color: var(--green); }
+  .tag.active { border-color: var(--green); color: var(--green); }
+  .about-skills-block { display: flex; flex-direction: column; gap: 18px; }
+  .skill-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  .skill-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .skill-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    flex-shrink: 0;
+  }
+  .skill-name {
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: var(--text);
+  }
+
+  /* ── PROJECTS ── */
+  #work { background: var(--surface); }
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    margin-top: 64px;
+    border: 2px solid var(--border);
+  }
+  .project-card {
+    background: var(--bg);
+    padding: 48px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+    cursor: default;
+  }
+  .project-card:hover { background: var(--surface2); }
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 0;
+    background: var(--green);
+    transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .project-card:hover::before { height: 100%; }
+  .project-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+  .project-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+  .project-type {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 16px;
+  }
+  .project-desc {
+    font-size: 14px;
+    color: var(--muted2);
+    line-height: 1.7;
+    margin-bottom: 28px;
+    font-weight: 300;
+  }
+  .project-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 28px;
+  }
+  .stack-pill {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    background: rgba(184,245,58,0.08);
+    color: var(--green);
+    border-radius: 2px;
+  }
+  .project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    transition: color 0.2s;
+  }
+  .project-link:hover { color: var(--green); }
+  .project-link svg { transition: transform 0.2s; }
+  .project-link:hover svg { transform: translate(3px, -3px); }
+  .project-card.featured {
+    grid-column: span 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .project-card.featured .project-num { font-size: 12px; }
+  .project-card.featured .project-name { font-size: 36px; }
+  .project-featured-meta { padding-top: 12px; }
+  .project-users {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--muted2);
+    padding: 10px 16px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+  }
+  .project-users span { color: var(--green); font-weight: 600; }
+
+  /* ── SERVICES ── */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    margin-top: 64px;
+    border: 1px solid var(--border);
+  }
+  .service-item {
+    background: var(--bg);
+    padding: 40px 36px;
+    transition: background 0.2s;
+  }
+  .service-item:hover { background: var(--surface2); }
+  .service-icon {
+    width: 40px; height: 40px;
+    margin-bottom: 24px;
+    color: var(--green);
+  }
+  .service-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+  .service-desc {
+    font-size: 14px;
+    color: var(--muted2);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  /* ── PROCESS ── */
+  #process { background: var(--surface); }
+  .process-list {
+    margin-top: 64px;
+    display: flex;
+    flex-direction: column;
+  }
+  .process-item {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 40px;
+    padding: 40px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: start;
+  }
+  .process-item:first-child { border-top: 1px solid var(--border); }
+  .process-step {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    padding-top: 4px;
+  }
+  .process-content h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+  .process-content p {
+    font-size: 15px;
+    color: var(--muted2);
+    font-weight: 300;
+    max-width: 560px;
+  }
+
+  /* ── CTA BAND ── */
+  .cta-band {
+    background: var(--green);
+    padding: 80px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+  }
+  .cta-band h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 3.5vw, 48px);
+    font-weight: 800;
+    color: #0d0d0d;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    max-width: 600px;
+  }
+  .cta-actions { display: flex; gap: 16px; align-items: center; flex-shrink: 0; }
+  .btn-dark {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #0d0d0d;
+    color: var(--green);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 16px 28px;
+    border-radius: 2px;
+    transition: background 0.2s;
+  }
+  .btn-dark:hover { background: #1a1a1a; }
+  .btn-outline-dark {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 2px solid #0d0d0d;
+    color: #0d0d0d;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 14px 24px;
+    border-radius: 2px;
+    transition: background 0.2s;
+  }
+  .btn-outline-dark:hover { background: rgba(0,0,0,0.1); }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--border);
+  }
+  .footer-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--green);
+  }
+  .footer-copy {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .footer-links {
+    display: flex;
+    gap: 24px;
+  }
+  .footer-links a {
+    font-size: 13px;
+    color: var(--muted);
+    transition: color 0.2s;
+    letter-spacing: 0.04em;
+  }
+  .footer-links a:hover { color: var(--green); }
+
+  /* ── ANIMATIONS ── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  .fade-up:nth-child(2) { transition-delay: 0.1s; }
+  .fade-up:nth-child(3) { transition-delay: 0.2s; }
+  .fade-up:nth-child(4) { transition-delay: 0.3s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 18px 24px; }
+    .nav-links { display: none; }
+    section { padding: 72px 24px; }
+    .hero { padding: 100px 24px 64px; min-height: auto; justify-content: flex-start; }
+    .hero-bottom { flex-direction: column; align-items: flex-start; gap: 32px; }
+    .hero-scroll { display: none; }
+    .about-grid { grid-template-columns: 1fr; gap: 48px; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .project-card.featured { grid-column: span 1; grid-template-columns: 1fr; }
+    .services-grid { grid-template-columns: 1fr; }
+    .cta-band { flex-direction: column; align-items: flex-start; padding: 56px 24px; }
+    .cta-actions { flex-direction: column; align-items: stretch; width: 100%; }
+    .cta-actions a { justify-content: center; }
+    .process-item { grid-template-columns: 1fr; gap: 8px; }
+    footer { flex-direction: column; gap: 20px; text-align: center; }
+    .hero-stats { gap: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <div class="nav-logo">J. Ortiz</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">Process</a></li>
+  </ul>
+  <a href="https://www.linkedin.com/in/ortjulian/" target="_blank" class="nav-cta">Let's talk</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-tag">Bubble Developer · UX Designer</div>
+  <h1 class="hero-title">
+    I build products<br>that <em>actually</em><br>ship.
+  </h1>
+  <div class="hero-bottom">
+    <p class="hero-desc">
+      No-code architect specializing in <strong>Bubble.io</strong> and <strong>Figma</strong>. From concept to live product — SaaS platforms, marketplaces, and custom web apps built fast, clean, and scalable. <strong>English-speaking</strong>, available for international teams.
+    </p>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">5+</div>
+        <div class="stat-label">Years building</div>
+      </div>
+      <div>
+        <div class="stat-num">1.4k</div>
+        <div class="stat-label">Users live</div>
+      </div>
+      <div>
+        <div class="stat-num">10+</div>
+        <div class="stat-label">Products launched</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">About me</div>
+  <div class="about-grid">
+    <div class="about-text fade-up">
+      <h2 class="section-title">Developer with a<br>designer's eye.</h2>
+      <p>I sit at the intersection of <strong>product thinking, UX design, and no-code development</strong>. My background in marketing means I understand what a product needs to communicate — not just how to build it.</p>
+      <p>I've worked at agencies shipping SaaS and marketplace products, at a startup redefining real estate investment in Colombia, and now take on <strong>international remote contracts</strong> for teams that want someone who can own a feature end-to-end.</p>
+      <p>I'm a <strong>Bubble specialist</strong> — database architecture, API integrations, responsive design, complex workflows. If you've seen what Bubble can do in the wrong hands, you'll appreciate what it looks like in the right ones.</p>
+      <div class="about-tags">
+        <span class="tag active">Bubble.io</span>
+        <span class="tag active">Figma</span>
+        <span class="tag">API Connector</span>
+        <span class="tag">Google Calendar API</span>
+        <span class="tag">OpenAI / Claude API</span>
+        <span class="tag">Adobe XD</span>
+        <span class="tag">UX Design</span>
+        <span class="tag">Product Strategy</span>
+        <span class="tag">Marketing</span>
+      </div>
+    </div>
+    <div class="about-skills-block fade-up">
+      <div class="skill-row">
+        <span class="skill-dot"></span>
+        <span class="skill-name">Bubble.io</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-dot"></span>
+        <span class="skill-name">UX / Figma</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-dot"></span>
+        <span class="skill-name">API integrations</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-dot"></span>
+        <span class="skill-name">Product strategy</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-dot"></span>
+        <span class="skill-name">AI integration</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-dot"></span>
+        <span class="skill-name">Marketing</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section id="work">
+  <div class="section-label">Selected work</div>
+  <div class="projects-grid">
+
+    <!-- FEATURED -->
+    <a href="projects/troop.html" class="project-card featured fade-up" style="text-decoration:none; color:inherit; display:grid;">
+      <div>
+        <div class="project-num">01 — FEATURED</div>
+        <div class="project-name">TROOP</div>
+        <div class="project-type">Real Estate Investment Marketplace</div>
+        <div class="project-users">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span>~1,400</span> active users · migrated from WordPress
+        </div>
+      </div>
+      <div class="project-featured-meta">
+        <p class="project-desc">Colombia's first fractional real estate platform. I designed and built it solo as the only Bubble developer on the team — database architecture, full UI, and the profit-distribution logic behind investor returns — migrating off WordPress to a platform now running 3+ years with ~1,400 active users.</p>
+        <div class="project-stack">
+          <span class="stack-pill">Bubble.io</span>
+          <span class="stack-pill">Figma</span>
+          <span class="stack-pill">Payment APIs</span>
+          <span class="stack-pill">Data architecture</span>
+          <span class="stack-pill">Responsive</span>
+        </div>
+        <span class="project-link">
+          View case study
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- CARD 2 -->
+    <a href="projects/enterapia.html" class="project-card fade-up" style="text-decoration:none; color:inherit; display:block;">
+      <div class="project-num">02</div>
+      <div class="project-name">Enterapia</div>
+      <div class="project-type">Mental Health SaaS Platform</div>
+      <p class="project-desc">Online therapy platform connecting patients with licensed psychologists across Colombia, Argentina, and Mexico. Joined an existing product as part of the team — improved UX, automated payments, integrated APIs, and optimized workflows over 2+ years.</p>
+      <div class="project-stack">
+        <span class="stack-pill">Bubble.io</span>
+        <span class="stack-pill">Payment automation</span>
+        <span class="stack-pill">API integrations</span>
+        <span class="stack-pill">UX improvements</span>
+      </div>
+      <span class="project-link">
+        View case study
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+      </span>
+    </a>
+
+    <!-- CARD 3 -->
+    <div class="project-card fade-up">
+      <div class="project-num">03</div>
+      <div class="project-name">Vending Marketplace</div>
+      <div class="project-type">SaaS · In progress</div>
+      <p class="project-desc">~90-screen vending machine marketplace built for Vibrant Agency (US). Browse, listing detail, and full auth flow designed in Adobe XD and implemented in Bubble with custom responsive breakpoints, MoSCoW-scoped MVP, and daily async collaboration with a distributed team.</p>
+      <div class="project-stack">
+        <span class="stack-pill">Bubble.io</span>
+        <span class="stack-pill">Adobe XD</span>
+        <span class="stack-pill">Remote team</span>
+        <span class="stack-pill">MVP scoping</span>
+      </div>
+      <span class="project-link" style="cursor:default; opacity:0.5;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Launching soon
+      </span>
+    </div>
+
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-label">What I do</div>
+  <h2 class="section-title">From zero to live product,<br>without the overhead.</h2>
+  <div class="services-grid">
+    <div class="service-item fade-up">
+      <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="3" y="3" width="18" height="18" rx="2"/>
+        <path d="M3 9h18M9 21V9"/>
+      </svg>
+      <div class="service-name">Bubble development</div>
+      <p class="service-desc">Full-stack no-code builds — database schema, complex workflows, API connectors, responsive design, and performance optimization. SaaS, marketplaces, internal tools.</p>
+    </div>
+    <div class="service-item fade-up">
+      <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+        <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+      </svg>
+      <div class="service-name">UX design</div>
+      <p class="service-desc">User flows, wireframes, and high-fidelity prototypes in Figma or Adobe XD. Design that maps directly to Bubble's structure — no translation gap between design and build.</p>
+    </div>
+    <div class="service-item fade-up">
+      <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+      </svg>
+      <div class="service-name">API integration</div>
+      <p class="service-desc">Google Calendar, OpenAI, Claude, TimezoneDB, payment gateways. I connect your Bubble app to any third-party service and make sure it works reliably in production.</p>
+    </div>
+    <div class="service-item fade-up">
+      <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+      </svg>
+      <div class="service-name">Migration & rescue</div>
+      <p class="service-desc">Inheriting a broken Bubble app? I audit architecture, identify bottlenecks, and refactor — or migrate from WordPress, Webflow, or any legacy system to a clean Bubble structure.</p>
+    </div>
+    <div class="service-item fade-up">
+      <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+      </svg>
+      <div class="service-name">AI-powered features</div>
+      <p class="service-desc">Integrate LLMs (OpenAI, Claude, Gemini) into your Bubble app — smart content generation, classification, search, and recommendation features without custom code infrastructure.</p>
+    </div>
+    <div class="service-item fade-up">
+      <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+      <div class="service-name">Long-term partnership</div>
+      <p class="service-desc">Available for ongoing retainers, embedded team roles, and agency white-label work. I communicate async, write structured updates, and work independently without hand-holding.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="section-label">How I work</div>
+  <h2 class="section-title">Structured, async-ready,<br>no surprises.</h2>
+  <div class="process-list">
+    <div class="process-item fade-up">
+      <div class="process-step">01</div>
+      <div class="process-content">
+        <h3>Scope before pixels</h3>
+        <p>I start with a structured scope breakdown — MoSCoW prioritization, database schema draft, and a realistic timeline. No surprises when we're three weeks in. No scope creep without mutual sign-off.</p>
+      </div>
+    </div>
+    <div class="process-item fade-up">
+      <div class="process-step">02</div>
+      <div class="process-content">
+        <h3>Design rooted in Bubble's logic</h3>
+        <p>I design in Figma or XD with Bubble's data structure in mind. Every component maps to a real data type. Every interaction maps to a workflow. The build phase moves fast because the design phase was honest.</p>
+      </div>
+    </div>
+    <div class="process-item fade-up">
+      <div class="process-step">03</div>
+      <div class="process-content">
+        <h3>Daily structured updates</h3>
+        <p>Async-first communication. I send daily structured Slack updates — what shipped, what's blocked, what's next. You always know where the project stands, without scheduling a call to find out.</p>
+      </div>
+    </div>
+    <div class="process-item fade-up">
+      <div class="process-step">04</div>
+      <div class="process-content">
+        <h3>Ship, iterate, improve</h3>
+        <p>I bias toward getting something live. A working MVP in front of real users beats a perfect product that ships never. Once we're live, we iterate based on data, not assumptions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-band">
+  <h2>Got a product idea or<br>a Bubble project that needs<br>a serious developer?</h2>
+  <div class="cta-actions">
+    <a href="https://www.linkedin.com/in/ortjulian/" target="_blank" class="btn-dark">
+      Connect on LinkedIn
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
+    </a>
+    <a href="mailto:your@email.com" class="btn-outline-dark">Send an email</a>
+    <a href="https://www.behance.net/julianortiz4" target="_blank" class="btn-outline-dark">View Behance</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Julian Ortiz</div>
+  <div class="footer-copy">© 2025 · Open to remote</div>
+  <div class="footer-links">
+    <a href="https://www.linkedin.com/in/ortjulian/" target="_blank">LinkedIn</a>
+    <a href="https://www.behance.net/julianortiz4" target="_blank">Behance</a>
+    <a href="#work">Work</a>
+    <a href="#about">About</a>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
